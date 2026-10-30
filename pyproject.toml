@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentshield"
+version = "0.1.0"
+description = "Ground-truth evaluation of indirect prompt injection against tool-calling LLM agents"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Divyanshi" }]
+dependencies = []
+
+[project.optional-dependencies]
+anthropic = ["anthropic>=1.0"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+agentshield = "agentshield.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["agentshield*"]
+
+[tool.setuptools.package-data]
+agentshield = ["suites/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
