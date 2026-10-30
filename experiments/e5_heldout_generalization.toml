@@ -1,0 +1,12 @@
+# E5: do defenses developed against the baseline phrasings hold on unseen ones?
+name = "e5_heldout_generalization"
+notes = "Held-out phrasings (attacks_heldout.json) were not used while writing D1-D4."
+
+[agent]
+type = "scripted"
+profile = "naive"
+
+[run]
+seed = 0
+techniques = "heldout"
+defenses = ["none", "D2", "D3", "D4", "D1+D2+D3+D4"]

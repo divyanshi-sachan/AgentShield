@@ -1,0 +1,22 @@
+# E1/E5/E6 baseline on Claude Haiku 5.5, no defense: how vulnerable is the model on its own?
+# Every task and goal, all 10 phrasings (7 baseline + 3 held-out), all 3 positions.
+# 7 tasks x (5 goals x 10 techniques x 3 positions + 1 benign) = 1,057 episodes.
+# One repeat: with ~1,050 attacked episodes the intervals are already tight;
+# add repeats later for scenario-level variance.
+name = "haiku_baseline"
+notes = "No-defense baseline on Claude Haiku 5.5 across all phrasings and positions."
+
+[agent]
+type = "claude"
+model = "claude-haiku-5-5"
+effort = "medium"
+max_turns = 12
+token_budget = 100000
+
+[run]
+seed = 0
+repeats = 1
+techniques = "all"
+positions = ["start", "middle", "end"]
+defenses = ["none"]
+concurrency = 8

@@ -1,0 +1,20 @@
+# Real-model E1-E4 on Claude. Costs money: check with
+#   agentshield experiment experiments/claude_defense_matrix.toml --dry-run
+# Start with the subset below, then remove the filters for the full suite.
+name = "claude_defense_matrix"
+
+[agent]
+type = "claude"
+model = "claude-opus-5-5"
+effort = "medium"
+max_turns = 12
+token_budget = 200000
+
+[run]
+seed = 0
+repeats = 3
+techniques = "baseline"
+positions = ["end"]
+tasks = ["summarize_offsite_email", "pay_supplier_invoice", "forward_q3_report", "news_digest"]
+technique_ids = ["ignore_previous", "important_message", "fake_system", "context_break"]
+defenses = ["none", "D1", "D2", "D3", "D4", "D1+D2+D3+D4"]

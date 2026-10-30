@@ -12,7 +12,7 @@ from __future__ import annotations
 import random
 from typing import Any
 
-from ..defenses import ToolGateway
+from ..gateway import ToolGateway
 from ..suite import Call, Injection, Task
 from .base import AgentResult
 

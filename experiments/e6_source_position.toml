@@ -1,0 +1,13 @@
+# E6: are emails, files and web pages equally dangerous, and does placement matter?
+# Uses the medium scripted profile; real differences by source/position need a real model.
+name = "e6_source_position"
+
+[agent]
+type = "scripted"
+profile = "medium"
+
+[run]
+seed = 0
+techniques = "baseline"
+positions = ["start", "middle", "end"]
+defenses = ["none", "D2", "D4"]

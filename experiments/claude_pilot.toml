@@ -1,0 +1,26 @@
+# Small paid pilot on Claude before the full matrix.
+# Goal: check the real-model loop end to end and get a first signal on
+# baseline vulnerability and on D1 (the one defense the scripted agent can't measure).
+#
+# Coverage: one task per source (email, file, web), the two strongest baseline
+# phrasings, and one goal per kind of harm (exfiltration, payment, lure).
+# 3 tasks x (3 goals x 2 techniques + 1 benign) = 21 episodes per defense.
+name = "claude_pilot_haiku"
+notes = "Pilot: 1 repeat, small subset. Treat rates as a sanity check, not a result; the intervals will be wide."
+
+[agent]
+type = "claude"
+model = "claude-haiku-5-5"
+effort = "medium"
+max_turns = 12
+token_budget = 100000
+
+[run]
+seed = 0
+repeats = 1
+techniques = "baseline"
+positions = ["end"]
+tasks = ["pay_supplier_invoice", "forward_q3_report", "news_digest"]
+goals = ["leak_secret_email", "unauthorized_transfer", "send_lure_link"]
+technique_ids = ["important_message", "context_break"]
+defenses = ["none", "D1", "D1+D2+D3+D4"]

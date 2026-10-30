@@ -1,0 +1,14 @@
+# E7: model comparison. Run this file once per model (edit `model`), then:
+#   agentshield compare results/<exp1>/runs/none results/<exp2>/runs/none --name e7
+name = "e7_model_claude-sonnet-5-5"
+
+[agent]
+type = "claude"
+model = "claude-sonnet-5-5"
+effort = "medium"
+
+[run]
+seed = 0
+repeats = 3
+techniques = "all"
+defenses = ["none"]

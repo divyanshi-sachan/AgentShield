@@ -1,0 +1,17 @@
+# E1-E4: baseline, individual defenses, combinations, usability cost.
+# Scripted 'naive' agent = a fully compromised agent that always attempts the
+# attack. This isolates what the enforcement layer stops on its own. D1 is
+# prompt-only and cannot change scripted outcomes by construction.
+name = "e1_e4_defense_matrix"
+notes = "Worst-case analysis: the scripted naive agent attempts every injected action, so ASR here measures what the gateway alone prevents."
+
+[agent]
+type = "scripted"
+profile = "naive"
+
+[run]
+seed = 0
+repeats = 1
+techniques = "baseline"
+positions = ["end"]
+defenses = ["none", "D1", "D2", "D3", "D4", "D1+D2", "D2+D3", "D3+D4", "D1+D2+D3+D4"]

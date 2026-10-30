@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Protocol
 
-from ..defenses import ToolGateway
+from ..gateway import ToolGateway
 from ..suite import Injection, Task
 
 SYSTEM_PROMPT = (
@@ -19,6 +19,7 @@ class AgentResult:
     refused: bool = False
     error: str | None = None
     usage: dict[str, int] = field(default_factory=dict)
+    model_reported: str | None = None  # model id the API says served the request
 
 
 class Agent(Protocol):
