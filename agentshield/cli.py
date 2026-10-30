@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from dataclasses import asdict
 from pathlib import Path
 
 from .agents import PROFILES, ScriptedAgent
@@ -147,6 +148,24 @@ def cmd_merge(args: argparse.Namespace) -> None:
     print(f"Merged {len(merged['primary'])} primary + {len(merged['reference'])} reference episodes -> {out}")
 
 
+def cmd_crossagent(args: argparse.Namespace) -> None:
+    from .crossagent import render_cross_report, run_suite, summarize_cross
+
+    results = run_suite(seed=args.seed, benign_per_defense=args.benign)
+    summary = summarize_cross(results)
+    out = Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "scenarios.jsonl").write_text("\n".join(json.dumps(asdict(r)) for r in results) + "\n")
+    (out / "summary.json").write_text(json.dumps(summary, indent=2))
+    (out / "report.md").write_text(render_cross_report(summary, args.seed))
+    u = summary["unprotected"]["downstream_attack_success_rate"]
+    p = summary["protected"]["downstream_attack_success_rate"]
+    print(
+        f"{len(results)} scenarios. Downstream attack success: unprotected {u['k']}/{u['n']}, protected {p['k']}/{p['n']}"
+    )
+    print(f"Report: {out / 'report.md'}")
+
+
 def cmd_compare(args: argparse.Namespace) -> None:
     cmp = compare_runs([load_run(d) for d in args.runs])
     out = Path(args.out)
@@ -201,6 +220,12 @@ def main(argv: list[str] | None = None) -> None:
     mrg.add_argument("--reference", help="run directory used only as a replication check (e.g. the original baseline)")
     mrg.add_argument("--out", required=True)
     mrg.set_defaults(func=cmd_merge)
+
+    ca = sub.add_parser("crossagent", help="run the cross-agent propagation study (offline, deterministic)")
+    ca.add_argument("--seed", type=int, default=0)
+    ca.add_argument("--benign", type=int, default=5, help="benign forwarded documents per workflow")
+    ca.add_argument("--out", default="results/crossagent")
+    ca.set_defaults(func=cmd_crossagent)
 
     cmp = sub.add_parser("compare", help="compare existing run directories (first 'none' run is the baseline)")
     cmp.add_argument("runs", nargs="+")
